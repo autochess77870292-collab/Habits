@@ -1,6 +1,6 @@
 :root {
-    --bg-color: #121212; /* Графитовый фон (чуть светлее черного) */
-    --card-bg: #000000; /* Карточки абсолютно черные */
+    --bg-color: #0a0a0a; /* Фон стал чуть темнее */
+    --card-bg: #000000; /* Карточки остаются черными */
     --card-border: #333333; /* Тонкая темно-серая обводка */
     --text-main: #ffffff; /* Белый для надписей */
     --text-muted: #8b949e; /* Серое описание */
@@ -19,24 +19,24 @@ body {
 /* Заголовок по центру, чуть темнее белого */
 h1 { 
     font-size: 24px; 
-    margin-bottom: 30px; 
+    margin-bottom: 25px; /* Чуть уменьшил отступ, чтобы список был выше */
     font-weight: 600; 
-    color: #e0e0e0; /* Приглушенный белый */
+    color: #e0e0e0; 
     text-align: center;
 }
 
 .habits-grid {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px; /* Расстояние между карточками стало меньше */
 }
 
 /* Карточка привычки */
 .habit-card {
-    background: var(--card-bg); /* Черный */
-    border: 1px solid var(--card-border); /* Тонкая темно-серая обводка */
+    background: var(--card-bg); 
+    border: 1px solid var(--card-border); 
     border-radius: 16px;
-    padding: 20px;
+    padding: 15px 20px; /* Высота карточки стала меньше (было 20px со всех сторон) */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -44,21 +44,20 @@ h1 {
     transition: 0.3s;
 }
 
-/* Свечение при активности (для таймера) */
 .habit-card.active {
-    border-color: var(--glow-blue); /* При активности рамка становится синей */
+    border-color: var(--glow-blue); 
     box-shadow: 0 0 15px rgba(88, 166, 255, 0.2);
 }
 
 /* Названия привычек - белые */
-.habit-info h3 { font-size: 18px; margin-bottom: 4px; color: var(--text-main); }
+.habit-info h3 { font-size: 18px; margin-bottom: 2px; color: var(--text-main); }
 /* Описания - серые */
 .habit-info p { font-size: 14px; color: var(--text-muted); }
 
 .habit-status {
     font-size: 12px;
     color: var(--glow-blue);
-    margin-top: 6px;
+    margin-top: 4px;
     display: inline-block;
     padding: 2px 8px;
     background: rgba(88, 166, 255, 0.1);
@@ -70,8 +69,8 @@ h1 {
     background: none;
     border: 2px solid var(--glow-blue);
     color: var(--glow-blue);
-    width: 56px;
-    height: 56px;
+    width: 50px; /* Чуть уменьшил кнопки, чтобы влезали в узкие карточки */
+    height: 50px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -83,7 +82,6 @@ h1 {
     flex-shrink: 0;
 }
 
-/* Кнопка Да/Нет (по умолчанию серая, при выполнении синяя) */
 .action-btn.btn-bool {
     border-color: var(--text-muted);
     color: var(--text-muted);
@@ -144,8 +142,8 @@ h1 {
 }
 
 .modal-content {
-    background: var(--card-bg); /* Черный фон окна */
-    border: 2px solid var(--glow-blue); /* Синяя обводка */
+    background: var(--card-bg);
+    border: 2px solid var(--glow-blue);
     padding: 25px;
     border-radius: 20px;
     width: 90%;
@@ -160,7 +158,7 @@ h1 {
 
 .form-group input, .form-group select {
     width: 100%;
-    background: var(--bg-color); /* На фоне модалки инпуты графитовые */
+    background: var(--bg-color);
     border: 1px solid var(--glow-blue);
     color: var(--text-main);
     padding: 12px;
