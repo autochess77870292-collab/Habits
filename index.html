@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Glow Habit Tracker</title>
-    <!-- Подключаем шрифт и иконки -->
+    
+    <!-- Подключаем шрифт и иконки (они не меняются, кэш им не страшен) -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Подключаем наш файл дизайна -->
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -60,7 +58,22 @@
         </div>
     </div>
 
-    <!-- Подключаем наш файл логики -->
-    <script src="app.js"></script>
+    <!-- МАГИЯ АВТООБНОВЛЕНИЯ (не трогай этот скрипт) -->
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const timestamp = new Date().getTime(); // Уникальное число
+            
+            // Автоматически подгружаем CSS со свежей меткой
+            const cssLink = document.createElement('link');
+            cssLink.rel = 'stylesheet';
+            cssLink.href = `style.css?t=${timestamp}`;
+            document.head.appendChild(cssLink);
+
+            // Автоматически подгружаем логику со свежей меткой
+            const jsScript = document.createElement('script');
+            jsScript.src = `app.js?t=${timestamp}`;
+            document.body.appendChild(jsScript);
+        });
+    </script>
 </body>
 </html>
