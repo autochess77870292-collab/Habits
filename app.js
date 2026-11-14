@@ -18,14 +18,26 @@ function renderHabits() {
         let btnHtml = '';
 
         if (habit.type === 'bool') {
-            btnHtml = `<button class="action-btn btn-bool ${habit.current === 1 ? 'completed' : ''}" onclick="toggleBool('${habit.id}')"><i class="fas fa-check"></i></button>`;
+            const isActive = habit.current === 1 ? 'active' : '';
+            btnHtml = `<button class="action-btn btn-bool ${isActive}" onclick="toggleBool('${habit.id}')"><i class="fas fa-check"></i></button>`;
         } 
         else if (habit.type === 'count') {
-            btnHtml = `<button class="action-btn btn-count" onclick="incrementCount('${habit.id}')">${habit.current}/${habit.target}</button>`;
+            // Считаем процент заполнения
+            let percent = (habit.current / habit.target) * 100;
+            // Если прогресс есть, кнопка активна (светится)
+            const isActive = habit.current > 0 ? 'active' : '';
+            // Передаем процент через inline-стиль --fill
+            btnHtml = `<button class="action-btn btn-count btn-fill ${isActive}" style="--fill: ${percent}%" onclick="incrementCount('${habit.id}')">${habit.current}/${habit.target}</button>`;
         } 
         else if (habit.type === 'timer') {
+            // Считаем процент прошедшего времени
+            let totalTime = habit.target * 60;
+            let percent = totalTime > 0 ? ((totalTime - habit.timeLeft) / totalTime) * 100 : 0;
+            // Кнопка активна, если таймер запущен или уже есть какой-то прогресс
+            const isActive = (habit.isRunning || habit.timeLeft < totalTime) ? 'active' : '';
+            
             statusText = habit.isRunning ? `Осталось: ${habit.timeLeft} сек.` : `Цель: ${habit.target} мин.`;
-            btnHtml = `<button class="action-btn btn-timer" onclick="toggleTimer('${habit.id}')"><i class="fas ${habit.isRunning ? 'fa-pause' : 'fa-play'}"></i></button>`;
+            btnHtml = `<button class="action-btn btn-timer btn-fill ${isActive}" id="btn-${habit.id}" style="--fill: ${percent}%" onclick="toggleTimer('${habit.id}')"><i class="fas ${habit.isRunning ? 'fa-pause' : 'fa-play'}"></i></button>`;
         }
 
         card.innerHTML = `
@@ -100,7 +112,7 @@ function incrementCount(id) {
     if (habit) {
         habit.current += 1;
         if (habit.current > habit.target) {
-            habit.current = 0; 
+            habit.current = 0; // Сброс
         }
         saveHabits();
         renderHabits();
@@ -114,6 +126,7 @@ function toggleTimer(id) {
     if (habit.isRunning) {
         clearInterval(habit.intervalId);
         habit.isRunning = false;
+        saveHabits();
     } else {
         habit.isRunning = true;
         
@@ -122,11 +135,21 @@ function toggleTimer(id) {
         habit.intervalId = setInterval(() => {
             habit.timeLeft--;
             
+            // Обновляем текст и заливку в реальном времени
             const statusEl = document.getElementById(`status-${habit.id}`);
+            const btnEl = document.getElementById(`btn-${habit.id}`);
+            
+            let totalTime = habit.target * 60;
+            let percent = ((totalTime - habit.timeLeft) / totalTime) * 100;
+
             if (statusEl) {
                 const min = Math.floor(habit.timeLeft / 60);
                 const sec = habit.timeLeft % 60;
                 statusEl.innerText = `Осталось: ${min}:${sec < 10 ? '0' : ''}${sec}`;
+            }
+            if (btnEl) {
+                btnEl.style.setProperty('--fill', `${percent}%`);
+                if (percent > 0) btnEl.classList.add('active');
             }
 
             if (habit.timeLeft <= 0) {
