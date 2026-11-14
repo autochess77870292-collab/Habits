@@ -37,11 +37,6 @@ h1 { font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #e0e0e0; tex
     transition: 0.3s;
 }
 
-.habit-card.active {
-    border-color: var(--glow-blue); 
-    box-shadow: 0 0 15px rgba(88, 166, 255, 0.2);
-}
-
 .habit-info h3 { font-size: 16px; margin-bottom: 2px; color: var(--text-main); }
 .habit-info p { font-size: 12px; color: var(--text-muted); }
 
@@ -55,40 +50,71 @@ h1 { font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #e0e0e0; tex
     border-radius: 10px;
 }
 
-/* БАЗОВЫЕ КНОПКИ (по умолчанию серые) */
+/* --- НОВАЯ СТРУКТУРА КНОПОК С ПРОГРЕССОМ --- */
 .action-btn {
-    background: none;
-    border: 2px solid var(--text-muted);
-    color: var(--text-muted);
+    position: relative;
     width: 44px;
     height: 44px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: 0.3s;
+}
+
+/* Фон кнопки (трек прогресса) */
+.btn-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
     border-radius: 12px;
+    background: var(--text-muted); /* Серый фон */
+    z-index: 0;
+    transition: 0.3s;
+}
+
+/* Заливка прогресса (обводка) */
+.btn-progress {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border-radius: 12px;
+    /* Круговой градиент закрашивает обводку в зависимости от процента */
+    background: conic-gradient(var(--glow-blue) var(--fill, 0%), transparent 0);
+    z-index: 1;
+    transition: 0.3s;
+}
+
+/* Внутренняя часть кнопки (чтобы получилась рамка) */
+.btn-inner {
+    position: absolute;
+    top: 2px; left: 2px; right: 2px; bottom: 2px; /* Толщина рамки 2px */
+    border-radius: 10px;
+    background: var(--card-bg); /* Черный фон внутри */
+    z-index: 2;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-    flex-shrink: 0;
 }
 
-/* СВЕЧЕНИЕ ДЛЯ АКТИВНЫХ КНОПОК (как у галочки) */
-.action-btn.active {
-    border-color: var(--glow-blue) !important;
-    color: var(--glow-blue) !important;
-    box-shadow: 0 0 15px rgba(88, 166, 255, 0.4) !important;
+/* Текст и иконки внутри */
+.btn-content {
+    position: relative;
+    z-index: 3;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 13px;
+    transition: 0.3s;
 }
-.action-btn.active i {
+
+/* Свечение при активности */
+.action-btn.active {
+    box-shadow: 0 0 15px rgba(88, 166, 255, 0.4);
+}
+.action-btn.active .btn-content {
+    color: var(--glow-blue);
     filter: drop-shadow(0 0 5px rgba(88, 166, 255, 0.8));
 }
 
-/* ЗАЛИВКА ДЛЯ КНОПОК ПОВТОРЕНИЯ И ТАЙМЕРА */
-.action-btn.btn-fill {
-    background: linear-gradient(90deg, rgba(88, 166, 255, 0.3) var(--fill, 0%), transparent var(--fill, 0%));
-}
-
-/* Кнопка Плюс (FAB) - светится как галочка */
+/* Кнопка Плюс (FAB) */
 .fab {
     position: fixed;
     bottom: 30px;
@@ -108,16 +134,14 @@ h1 { font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #e0e0e0; tex
     transition: 0.3s;
     z-index: 10;
 }
-.fab i {
-    filter: drop-shadow(0 0 5px rgba(88, 166, 255, 0.8));
-}
+.fab i { filter: drop-shadow(0 0 5px rgba(88, 166, 255, 0.8)); }
 .fab:active { transform: scale(0.95); }
 
-/* Модальное окно */
+/* --- МОДАЛЬНОЕ ОКНО В СТИЛЕ СПИСКА --- */
 .modal-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0,0,0,0.85);
     backdrop-filter: blur(5px);
     display: none;
     justify-content: center;
@@ -126,39 +150,40 @@ h1 { font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #e0e0e0; tex
 }
 
 .modal-content {
-    background: var(--card-bg);
-    border: 2px solid var(--glow-blue);
+    background: var(--card-bg); /* Черный фон */
+    border: 1px solid var(--card-border); /* Тонкая темная обводка */
     padding: 25px;
-    border-radius: 20px;
+    border-radius: 16px; /* Такие же скругления, как у карточек */
     width: 90%;
     max-width: 400px;
-    box-shadow: 0 0 30px rgba(88, 166, 255, 0.15);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
 }
 
 .modal-content h2 { margin-bottom: 20px; font-size: 20px; text-align: center; color: var(--text-main); }
 
 .form-group { margin-bottom: 15px; }
-.form-group label { display: block; font-size: 12px; color: var(--glow-blue); margin-bottom: 5px; }
+.form-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 5px; }
 
 .form-group input, .form-group select {
     width: 100%;
     background: var(--bg-color);
-    border: 1px solid var(--glow-blue);
+    border: 1px solid var(--card-border); /* Темная обводка */
     color: var(--text-main);
     padding: 12px;
-    border-radius: 10px;
+    border-radius: 8px;
     font-size: 16px;
     outline: none;
+    transition: 0.3s;
 }
 .form-group input::placeholder { color: var(--text-muted); }
 .form-group input:focus, .form-group select:focus {
-    box-shadow: 0 0 10px rgba(88, 166, 255, 0.3);
+    border-color: var(--glow-blue);
+    box-shadow: 0 0 10px rgba(88, 166, 255, 0.2);
 }
 
 .form-row { display: flex; gap: 10px; }
 .form-row .form-group { flex: 1; }
 
-/* Кнопка "Добавить" - светится как галочка */
 .btn-submit {
     width: 100%;
     padding: 15px;
@@ -183,11 +208,12 @@ h1 { font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #e0e0e0; tex
 .close-modal {
     position: absolute;
     top: 15px; right: 15px;
-    color: var(--text-main);
+    color: var(--text-muted);
     font-size: 20px;
     cursor: pointer;
     background: none;
     border: none;
 }
+.close-modal:hover { color: var(--text-main); }
 
 .hidden { display: none; }
