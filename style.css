@@ -16,26 +16,20 @@ body {
     padding-bottom: 100px;
 }
 
-h1 { 
-    font-size: 24px; 
-    margin-bottom: 20px; 
-    font-weight: 600; 
-    color: #e0e0e0; 
-    text-align: center;
-}
+h1 { font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #e0e0e0; text-align: center; }
 
 .habits-grid {
     display: flex;
     flex-direction: column;
-    gap: 8px; /* Уменьшил расстояние между карточками */
+    gap: 8px;
 }
 
-/* Карточка привычки - стала компактнее */
+/* Карточка привычки */
 .habit-card {
     background: var(--card-bg); 
     border: 1px solid var(--card-border); 
     border-radius: 12px;
-    padding: 12px 15px; /* Уменьшили высоту карточки */
+    padding: 12px 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -48,7 +42,6 @@ h1 {
     box-shadow: 0 0 15px rgba(88, 166, 255, 0.2);
 }
 
-/* Тексты */
 .habit-info h3 { font-size: 16px; margin-bottom: 2px; color: var(--text-main); }
 .habit-info p { font-size: 12px; color: var(--text-muted); }
 
@@ -62,14 +55,14 @@ h1 {
     border-radius: 10px;
 }
 
-/* Кнопки - квадратные со скруглениями, с легким свечением */
+/* БАЗОВЫЕ КНОПКИ (по умолчанию серые) */
 .action-btn {
     background: none;
-    border: 2px solid var(--glow-blue);
-    color: var(--glow-blue);
-    width: 44px; /* Уменьшили кнопки */
+    border: 2px solid var(--text-muted);
+    color: var(--text-muted);
+    width: 44px;
     height: 44px;
-    border-radius: 12px; /* Квадратные с закругленными краями */
+    border-radius: 12px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -78,57 +71,31 @@ h1 {
     cursor: pointer;
     transition: 0.3s;
     flex-shrink: 0;
-    box-shadow: 0 0 8px rgba(88, 166, 255, 0.2); /* Легкое свечение самой кнопки */
 }
 
-/* Свечение самих иконок внутри кнопок */
-.action-btn i {
-    filter: drop-shadow(0 0 5px rgba(88, 166, 255, 0.6));
+/* СВЕЧЕНИЕ ДЛЯ АКТИВНЫХ КНОПОК (как у галочки) */
+.action-btn.active {
+    border-color: var(--glow-blue) !important;
+    color: var(--glow-blue) !important;
+    box-shadow: 0 0 15px rgba(88, 166, 255, 0.4) !important;
 }
-
-/* Кнопка Да/Нет (по умолчанию без свечения и серая) */
-.action-btn.btn-bool {
-    border-color: var(--text-muted);
-    color: var(--text-muted);
-    box-shadow: none;
-}
-.action-btn.btn-bool i {
-    filter: none;
-}
-
-/* При выполнении - синяя и светится */
-.action-btn.btn-bool.completed {
-    border-color: var(--glow-blue);
-    color: var(--glow-blue);
-    box-shadow: 0 0 15px rgba(88, 166, 255, 0.4);
-    background: rgba(88, 166, 255, 0.1);
-}
-.action-btn.btn-bool.completed i {
+.action-btn.active i {
     filter: drop-shadow(0 0 5px rgba(88, 166, 255, 0.8));
 }
 
-.action-btn.btn-count {
-    font-size: 13px;
-    letter-spacing: -0.5px;
-}
-.action-btn.btn-count:active {
-    box-shadow: 0 0 15px rgba(88, 166, 255, 0.5);
-    background: rgba(88, 166, 255, 0.1);
+/* ЗАЛИВКА ДЛЯ КНОПОК ПОВТОРЕНИЯ И ТАЙМЕРА */
+.action-btn.btn-fill {
+    background: linear-gradient(90deg, rgba(88, 166, 255, 0.3) var(--fill, 0%), transparent var(--fill, 0%));
 }
 
-.action-btn.btn-timer:active {
-    box-shadow: 0 0 15px rgba(88, 166, 255, 0.5);
-    background: rgba(88, 166, 255, 0.1);
-}
-
-/* Кнопка Плюс (FAB) со свечением */
+/* Кнопка Плюс (FAB) - светится как галочка */
 .fab {
     position: fixed;
     bottom: 30px;
     right: 30px;
     width: 60px;
     height: 60px;
-    border-radius: 20px; /* Тоже сделал скругленной */
+    border-radius: 20px;
     background: var(--card-bg);
     border: 2px solid var(--glow-blue);
     color: var(--glow-blue);
@@ -137,12 +104,12 @@ h1 {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    box-shadow: 0 0 20px rgba(88, 166, 255, 0.4);
+    box-shadow: 0 0 15px rgba(88, 166, 255, 0.4);
     transition: 0.3s;
     z-index: 10;
 }
 .fab i {
-    filter: drop-shadow(0 0 8px rgba(88, 166, 255, 0.8));
+    filter: drop-shadow(0 0 5px rgba(88, 166, 255, 0.8));
 }
 .fab:active { transform: scale(0.95); }
 
@@ -191,11 +158,12 @@ h1 {
 .form-row { display: flex; gap: 10px; }
 .form-row .form-group { flex: 1; }
 
+/* Кнопка "Добавить" - светится как галочка */
 .btn-submit {
     width: 100%;
     padding: 15px;
     background: rgba(88, 166, 255, 0.1);
-    border: 1px solid var(--glow-blue);
+    border: 2px solid var(--glow-blue);
     color: var(--glow-blue);
     border-radius: 10px;
     font-size: 16px;
@@ -203,8 +171,14 @@ h1 {
     cursor: pointer;
     margin-top: 10px;
     transition: 0.3s;
+    box-shadow: 0 0 15px rgba(88, 166, 255, 0.4);
+    text-shadow: 0 0 5px rgba(88, 166, 255, 0.8);
 }
-.btn-submit:active { background: var(--glow-blue); color: #000; box-shadow: 0 0 20px var(--glow-blue); }
+.btn-submit:active { 
+    background: var(--glow-blue); 
+    color: #000; 
+    box-shadow: 0 0 20px var(--glow-blue); 
+}
 
 .close-modal {
     position: absolute;
