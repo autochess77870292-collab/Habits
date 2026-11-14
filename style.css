@@ -1,10 +1,10 @@
 :root {
-    --bg-color: #0a0a0a; /* Фон стал чуть темнее */
-    --card-bg: #000000; /* Карточки остаются черными */
-    --card-border: #333333; /* Тонкая темно-серая обводка */
-    --text-main: #ffffff; /* Белый для надписей */
-    --text-muted: #8b949e; /* Серое описание */
-    --glow-blue: #58a6ff; /* Синий акцент */
+    --bg-color: #0a0a0a; 
+    --card-bg: #000000; 
+    --card-border: #333333; 
+    --text-main: #ffffff; 
+    --text-muted: #8b949e; 
+    --glow-blue: #58a6ff; 
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
@@ -16,10 +16,9 @@ body {
     padding-bottom: 100px;
 }
 
-/* Заголовок по центру, чуть темнее белого */
 h1 { 
     font-size: 24px; 
-    margin-bottom: 25px; /* Чуть уменьшил отступ, чтобы список был выше */
+    margin-bottom: 20px; 
     font-weight: 600; 
     color: #e0e0e0; 
     text-align: center;
@@ -28,15 +27,15 @@ h1 {
 .habits-grid {
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Расстояние между карточками стало меньше */
+    gap: 8px; /* Уменьшил расстояние между карточками */
 }
 
-/* Карточка привычки */
+/* Карточка привычки - стала компактнее */
 .habit-card {
     background: var(--card-bg); 
     border: 1px solid var(--card-border); 
-    border-radius: 16px;
-    padding: 15px 20px; /* Высота карточки стала меньше (было 20px со всех сторон) */
+    border-radius: 12px;
+    padding: 12px 15px; /* Уменьшили высоту карточки */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -49,13 +48,12 @@ h1 {
     box-shadow: 0 0 15px rgba(88, 166, 255, 0.2);
 }
 
-/* Названия привычек - белые */
-.habit-info h3 { font-size: 18px; margin-bottom: 2px; color: var(--text-main); }
-/* Описания - серые */
-.habit-info p { font-size: 14px; color: var(--text-muted); }
+/* Тексты */
+.habit-info h3 { font-size: 16px; margin-bottom: 2px; color: var(--text-main); }
+.habit-info p { font-size: 12px; color: var(--text-muted); }
 
 .habit-status {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--glow-blue);
     margin-top: 4px;
     display: inline-block;
@@ -64,57 +62,73 @@ h1 {
     border-radius: 10px;
 }
 
-/* Круглые кнопки - синие */
+/* Кнопки - квадратные со скруглениями, с легким свечением */
 .action-btn {
     background: none;
     border: 2px solid var(--glow-blue);
     color: var(--glow-blue);
-    width: 50px; /* Чуть уменьшил кнопки, чтобы влезали в узкие карточки */
-    height: 50px;
-    border-radius: 50%;
+    width: 44px; /* Уменьшили кнопки */
+    height: 44px;
+    border-radius: 12px; /* Квадратные с закругленными краями */
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     transition: 0.3s;
     flex-shrink: 0;
+    box-shadow: 0 0 8px rgba(88, 166, 255, 0.2); /* Легкое свечение самой кнопки */
 }
 
+/* Свечение самих иконок внутри кнопок */
+.action-btn i {
+    filter: drop-shadow(0 0 5px rgba(88, 166, 255, 0.6));
+}
+
+/* Кнопка Да/Нет (по умолчанию без свечения и серая) */
 .action-btn.btn-bool {
     border-color: var(--text-muted);
     color: var(--text-muted);
+    box-shadow: none;
 }
+.action-btn.btn-bool i {
+    filter: none;
+}
+
+/* При выполнении - синяя и светится */
 .action-btn.btn-bool.completed {
     border-color: var(--glow-blue);
     color: var(--glow-blue);
     box-shadow: 0 0 15px rgba(88, 166, 255, 0.4);
     background: rgba(88, 166, 255, 0.1);
 }
+.action-btn.btn-bool.completed i {
+    filter: drop-shadow(0 0 5px rgba(88, 166, 255, 0.8));
+}
 
 .action-btn.btn-count {
-    font-size: 15px;
+    font-size: 13px;
     letter-spacing: -0.5px;
 }
 .action-btn.btn-count:active {
-    box-shadow: 0 0 15px rgba(88, 166, 255, 0.4);
+    box-shadow: 0 0 15px rgba(88, 166, 255, 0.5);
     background: rgba(88, 166, 255, 0.1);
 }
 
 .action-btn.btn-timer:active {
-    box-shadow: 0 0 15px rgba(88, 166, 255, 0.4);
+    box-shadow: 0 0 15px rgba(88, 166, 255, 0.5);
     background: rgba(88, 166, 255, 0.1);
 }
 
-/* Кнопка Плюс (FAB) */
+/* Кнопка Плюс (FAB) со свечением */
 .fab {
     position: fixed;
     bottom: 30px;
     right: 30px;
     width: 60px;
     height: 60px;
-    border-radius: 50%;
+    border-radius: 20px; /* Тоже сделал скругленной */
     background: var(--card-bg);
     border: 2px solid var(--glow-blue);
     color: var(--glow-blue);
@@ -123,9 +137,12 @@ h1 {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    box-shadow: 0 0 20px rgba(88, 166, 255, 0.3);
+    box-shadow: 0 0 20px rgba(88, 166, 255, 0.4);
     transition: 0.3s;
     z-index: 10;
+}
+.fab i {
+    filter: drop-shadow(0 0 8px rgba(88, 166, 255, 0.8));
 }
 .fab:active { transform: scale(0.95); }
 
