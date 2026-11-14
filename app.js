@@ -11,33 +11,47 @@ function renderHabits() {
 
     habits.forEach(habit => {
         const card = document.createElement('div');
-        card.className = `habit-card ${habit.isRunning ? 'active' : ''}`;
+        card.className = 'habit-card';
         card.id = `card-${habit.id}`;
 
         let statusText = '';
         let btnHtml = '';
 
         if (habit.type === 'bool') {
+            const percent = habit.current === 1 ? 100 : 0;
             const isActive = habit.current === 1 ? 'active' : '';
-            btnHtml = `<button class="action-btn btn-bool ${isActive}" onclick="toggleBool('${habit.id}')"><i class="fas fa-check"></i></button>`;
+            btnHtml = `
+                <button class="action-btn ${isActive}" onclick="toggleBool('${habit.id}')">
+                    <div class="btn-bg"></div>
+                    <div class="btn-progress" style="--fill: ${percent}%"></div>
+                    <div class="btn-inner"><i class="fas fa-check btn-content"></i></div>
+                </button>
+            `;
         } 
         else if (habit.type === 'count') {
-            // Считаем процент заполнения
             let percent = (habit.current / habit.target) * 100;
-            // Если прогресс есть, кнопка активна (светится)
             const isActive = habit.current > 0 ? 'active' : '';
-            // Передаем процент через inline-стиль --fill
-            btnHtml = `<button class="action-btn btn-count btn-fill ${isActive}" style="--fill: ${percent}%" onclick="incrementCount('${habit.id}')">${habit.current}/${habit.target}</button>`;
+            btnHtml = `
+                <button class="action-btn ${isActive}" onclick="incrementCount('${habit.id}')">
+                    <div class="btn-bg"></div>
+                    <div class="btn-progress" style="--fill: ${percent}%"></div>
+                    <div class="btn-inner"><span class="btn-content">${habit.current}/${habit.target}</span></div>
+                </button>
+            `;
         } 
         else if (habit.type === 'timer') {
-            // Считаем процент прошедшего времени
             let totalTime = habit.target * 60;
             let percent = totalTime > 0 ? ((totalTime - habit.timeLeft) / totalTime) * 100 : 0;
-            // Кнопка активна, если таймер запущен или уже есть какой-то прогресс
             const isActive = (habit.isRunning || habit.timeLeft < totalTime) ? 'active' : '';
             
             statusText = habit.isRunning ? `Осталось: ${habit.timeLeft} сек.` : `Цель: ${habit.target} мин.`;
-            btnHtml = `<button class="action-btn btn-timer btn-fill ${isActive}" id="btn-${habit.id}" style="--fill: ${percent}%" onclick="toggleTimer('${habit.id}')"><i class="fas ${habit.isRunning ? 'fa-pause' : 'fa-play'}"></i></button>`;
+            btnHtml = `
+                <button class="action-btn ${isActive}" id="btn-${habit.id}" onclick="toggleTimer('${habit.id}')">
+                    <div class="btn-bg"></div>
+                    <div class="btn-progress" id="progress-${habit.id}" style="--fill: ${percent}%"></div>
+                    <div class="btn-inner"><i class="fas ${habit.isRunning ? 'fa-pause' : 'fa-play'} btn-content"></i></div>
+                </button>
+            `;
         }
 
         card.innerHTML = `
@@ -112,7 +126,7 @@ function incrementCount(id) {
     if (habit) {
         habit.current += 1;
         if (habit.current > habit.target) {
-            habit.current = 0; // Сброс
+            habit.current = 0; 
         }
         saveHabits();
         renderHabits();
@@ -127,6 +141,7 @@ function toggleTimer(id) {
         clearInterval(habit.intervalId);
         habit.isRunning = false;
         saveHabits();
+        renderHabits();
     } else {
         habit.isRunning = true;
         
@@ -135,8 +150,8 @@ function toggleTimer(id) {
         habit.intervalId = setInterval(() => {
             habit.timeLeft--;
             
-            // Обновляем текст и заливку в реальном времени
             const statusEl = document.getElementById(`status-${habit.id}`);
+            const progressEl = document.getElementById(`progress-${habit.id}`);
             const btnEl = document.getElementById(`btn-${habit.id}`);
             
             let totalTime = habit.target * 60;
@@ -147,9 +162,11 @@ function toggleTimer(id) {
                 const sec = habit.timeLeft % 60;
                 statusEl.innerText = `Осталось: ${min}:${sec < 10 ? '0' : ''}${sec}`;
             }
-            if (btnEl) {
-                btnEl.style.setProperty('--fill', `${percent}%`);
-                if (percent > 0) btnEl.classList.add('active');
+            if (progressEl) {
+                progressEl.style.setProperty('--fill', `${percent}%`);
+            }
+            if (btnEl && !btnEl.classList.contains('active')) {
+                btnEl.classList.add('active');
             }
 
             if (habit.timeLeft <= 0) {
@@ -162,7 +179,6 @@ function toggleTimer(id) {
             }
         }, 1000);
     }
-    renderHabits();
 }
 
 renderHabits();
