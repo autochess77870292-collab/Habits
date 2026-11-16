@@ -50,7 +50,7 @@ h1 { font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #e0e0e0; tex
     border-radius: 10px;
 }
 
-/* --- НОВАЯ СТРУКТУРА КНОПОК С ПРОГРЕССОМ --- */
+/* --- КНОПКИ С ПРОГРЕССОМ --- */
 .action-btn {
     position: relative;
     width: 44px;
@@ -62,40 +62,33 @@ h1 { font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #e0e0e0; tex
     transition: 0.3s;
 }
 
-/* Фон кнопки (трек прогресса) */
 .btn-bg {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     border-radius: 12px;
-    background: var(--text-muted); /* Серый фон */
+    background: var(--text-muted); 
     z-index: 0;
-    transition: 0.3s;
 }
 
-/* Заливка прогресса (обводка) */
 .btn-progress {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     border-radius: 12px;
-    /* Круговой градиент закрашивает обводку в зависимости от процента */
     background: conic-gradient(var(--glow-blue) var(--fill, 0%), transparent 0);
     z-index: 1;
-    transition: 0.3s;
 }
 
-/* Внутренняя часть кнопки (чтобы получилась рамка) */
 .btn-inner {
     position: absolute;
-    top: 2px; left: 2px; right: 2px; bottom: 2px; /* Толщина рамки 2px */
+    top: 2px; left: 2px; right: 2px; bottom: 2px;
     border-radius: 10px;
-    background: var(--card-bg); /* Черный фон внутри */
+    background: var(--card-bg);
     z-index: 2;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Текст и иконки внутри */
 .btn-content {
     position: relative;
     z-index: 3;
@@ -112,6 +105,29 @@ h1 { font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #e0e0e0; tex
 .action-btn.active .btn-content {
     color: var(--glow-blue);
     filter: drop-shadow(0 0 5px rgba(88, 166, 255, 0.8));
+}
+
+/* --- ИСКЛЮЧЕНИЕ ДЛЯ ТАЙМЕРА: Треугольник всегда серый, пока не 100% --- */
+.action-btn.btn-timer .btn-content {
+    color: var(--text-muted) !important; /* Принудительно серый */
+    filter: none !important; /* Без свечения */
+}
+/* Когда таймер заполнен на 100% (класс full), он становится синим */
+.action-btn.btn-timer.full .btn-content {
+    color: var(--glow-blue) !important;
+    filter: drop-shadow(0 0 5px rgba(88, 166, 255, 0.8)) !important;
+}
+
+/* --- АНИМАЦИЯ НАЖАТИЯ --- */
+@keyframes pressPop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.12); } /* Увеличивается */
+    100% { transform: scale(1); } /* Возвращается */
+}
+
+/* Применяем анимацию ко всем кнопкам при нажатии */
+.action-btn:active, .fab:active, .btn-submit:active, .close-modal:active {
+    animation: pressPop 0.2s ease-in-out;
 }
 
 /* Кнопка Плюс (FAB) */
@@ -135,9 +151,8 @@ h1 { font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #e0e0e0; tex
     z-index: 10;
 }
 .fab i { filter: drop-shadow(0 0 5px rgba(88, 166, 255, 0.8)); }
-.fab:active { transform: scale(0.95); }
 
-/* --- МОДАЛЬНОЕ ОКНО В СТИЛЕ СПИСКА --- */
+/* --- МОДАЛЬНОЕ ОКНО --- */
 .modal-overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -150,10 +165,10 @@ h1 { font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #e0e0e0; tex
 }
 
 .modal-content {
-    background: var(--card-bg); /* Черный фон */
-    border: 1px solid var(--card-border); /* Тонкая темная обводка */
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
     padding: 25px;
-    border-radius: 16px; /* Такие же скругления, как у карточек */
+    border-radius: 16px;
     width: 90%;
     max-width: 400px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.8);
@@ -167,7 +182,7 @@ h1 { font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #e0e0e0; tex
 .form-group input, .form-group select {
     width: 100%;
     background: var(--bg-color);
-    border: 1px solid var(--card-border); /* Темная обводка */
+    border: 1px solid var(--card-border);
     color: var(--text-main);
     padding: 12px;
     border-radius: 8px;
@@ -199,11 +214,6 @@ h1 { font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #e0e0e0; tex
     box-shadow: 0 0 15px rgba(88, 166, 255, 0.4);
     text-shadow: 0 0 5px rgba(88, 166, 255, 0.8);
 }
-.btn-submit:active { 
-    background: var(--glow-blue); 
-    color: #000; 
-    box-shadow: 0 0 20px var(--glow-blue); 
-}
 
 .close-modal {
     position: absolute;
@@ -213,6 +223,7 @@ h1 { font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #e0e0e0; tex
     cursor: pointer;
     background: none;
     border: none;
+    transition: 0.3s;
 }
 .close-modal:hover { color: var(--text-main); }
 
