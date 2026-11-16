@@ -42,11 +42,15 @@ function renderHabits() {
         else if (habit.type === 'timer') {
             let totalTime = habit.target * 60;
             let percent = totalTime > 0 ? ((totalTime - habit.timeLeft) / totalTime) * 100 : 0;
-            const isActive = (habit.isRunning || habit.timeLeft < totalTime) ? 'active' : '';
             
-            statusText = habit.isRunning ? `Осталось: ${habit.timeLeft} сек.` : `Цель: ${habit.target} мин.`;
+            const isActive = (habit.isRunning || habit.timeLeft < totalTime) ? 'active' : '';
+            // Добавляем класс full, если прогресс достиг 100%
+            const isFull = percent >= 100 ? 'full' : '';
+            
+            statusText = habit.isRunning ? `Осталось: ${habit.timeLeft} сек.` : (percent >= 100 ? 'Выполнено' : `Цель: ${habit.target} мин.`);
+            
             btnHtml = `
-                <button class="action-btn ${isActive}" id="btn-${habit.id}" onclick="toggleTimer('${habit.id}')">
+                <button class="action-btn btn-timer ${isActive} ${isFull}" id="btn-${habit.id}" onclick="toggleTimer('${habit.id}')">
                     <div class="btn-bg"></div>
                     <div class="btn-progress" id="progress-${habit.id}" style="--fill: ${percent}%"></div>
                     <div class="btn-inner"><i class="fas ${habit.isRunning ? 'fa-pause' : 'fa-play'} btn-content"></i></div>
@@ -165,8 +169,13 @@ function toggleTimer(id) {
             if (progressEl) {
                 progressEl.style.setProperty('--fill', `${percent}%`);
             }
-            if (btnEl && !btnEl.classList.contains('active')) {
-                btnEl.classList.add('active');
+            if (btnEl) {
+                if (!btnEl.classList.contains('active')) btnEl.classList.add('active');
+                
+                // Если прогресс достиг 100%, добавляем класс full (треугольник станет синим)
+                if (percent >= 100) {
+                    btnEl.classList.add('full');
+                }
             }
 
             if (habit.timeLeft <= 0) {
@@ -179,6 +188,7 @@ function toggleTimer(id) {
             }
         }, 1000);
     }
+    renderHabits();
 }
 
 renderHabits();
