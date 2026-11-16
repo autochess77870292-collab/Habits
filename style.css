@@ -7,13 +7,21 @@
     --glow-blue: #58a6ff; 
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+    font-family: 'Inter', sans-serif; 
+    -webkit-tap-highlight-color: transparent; /* Убираем синий квадрат при нажатии */
+}
 
 body {
     background-color: var(--bg-color);
     color: var(--text-main);
     padding: 20px;
     padding-bottom: 100px;
+    user-select: none; /* Запрещаем выделение текста */
+    -webkit-user-select: none;
 }
 
 h1 { font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #e0e0e0; text-align: center; }
@@ -60,6 +68,7 @@ h1 { font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #e0e0e0; tex
     cursor: pointer;
     flex-shrink: 0;
     transition: 0.3s;
+    outline: none; /* Убираем рамку фокуса */
 }
 
 .btn-bg {
@@ -107,12 +116,11 @@ h1 { font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #e0e0e0; tex
     filter: drop-shadow(0 0 5px rgba(88, 166, 255, 0.8));
 }
 
-/* --- ИСКЛЮЧЕНИЕ ДЛЯ ТАЙМЕРА: Треугольник всегда серый, пока не 100% --- */
+/* Таймер: треугольник серый, пока не 100% */
 .action-btn.btn-timer .btn-content {
-    color: var(--text-muted) !important; /* Принудительно серый */
-    filter: none !important; /* Без свечения */
+    color: var(--text-muted) !important; 
+    filter: none !important;
 }
-/* Когда таймер заполнен на 100% (класс full), он становится синим */
 .action-btn.btn-timer.full .btn-content {
     color: var(--glow-blue) !important;
     filter: drop-shadow(0 0 5px rgba(88, 166, 255, 0.8)) !important;
@@ -121,12 +129,12 @@ h1 { font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #e0e0e0; tex
 /* --- АНИМАЦИЯ НАЖАТИЯ --- */
 @keyframes pressPop {
     0% { transform: scale(1); }
-    50% { transform: scale(1.12); } /* Увеличивается */
-    100% { transform: scale(1); } /* Возвращается */
+    50% { transform: scale(1.12); } 
+    100% { transform: scale(1); } 
 }
 
-/* Применяем анимацию ко всем кнопкам при нажатии */
-.action-btn:active, .fab:active, .btn-submit:active, .close-modal:active {
+/* Класс, который мы будем добавлять через JS для проигрывания анимации */
+.animate-pop {
     animation: pressPop 0.2s ease-in-out;
 }
 
@@ -149,6 +157,7 @@ h1 { font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #e0e0e0; tex
     box-shadow: 0 0 15px rgba(88, 166, 255, 0.4);
     transition: 0.3s;
     z-index: 10;
+    outline: none;
 }
 .fab i { filter: drop-shadow(0 0 5px rgba(88, 166, 255, 0.8)); }
 
@@ -213,6 +222,7 @@ h1 { font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #e0e0e0; tex
     transition: 0.3s;
     box-shadow: 0 0 15px rgba(88, 166, 255, 0.4);
     text-shadow: 0 0 5px rgba(88, 166, 255, 0.8);
+    outline: none;
 }
 
 .close-modal {
@@ -224,6 +234,7 @@ h1 { font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #e0e0e0; tex
     background: none;
     border: none;
     transition: 0.3s;
+    outline: none;
 }
 .close-modal:hover { color: var(--text-main); }
 
