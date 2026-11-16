@@ -44,7 +44,6 @@ function renderHabits() {
             let percent = totalTime > 0 ? ((totalTime - habit.timeLeft) / totalTime) * 100 : 0;
             
             const isActive = (habit.isRunning || habit.timeLeft < totalTime) ? 'active' : '';
-            // Добавляем класс full, если прогресс достиг 100%
             const isFull = percent >= 100 ? 'full' : '';
             
             statusText = habit.isRunning ? `Осталось: ${habit.timeLeft} сек.` : (percent >= 100 ? 'Выполнено' : `Цель: ${habit.target} мин.`);
@@ -171,8 +170,6 @@ function toggleTimer(id) {
             }
             if (btnEl) {
                 if (!btnEl.classList.contains('active')) btnEl.classList.add('active');
-                
-                // Если прогресс достиг 100%, добавляем класс full (треугольник станет синим)
                 if (percent >= 100) {
                     btnEl.classList.add('full');
                 }
@@ -190,5 +187,27 @@ function toggleTimer(id) {
     }
     renderHabits();
 }
+
+// --- МАГИЯ АНИМАЦИИ НАЖАТИЯ ---
+// Слушаем начало нажатия (палец или мышь) на любые кнопки
+document.addEventListener('pointerdown', (e) => {
+    // Ищем ближайшую кнопку, по которой кликнули
+    const btn = e.target.closest('.action-btn, .fab, .btn-submit, .close-modal');
+    if (btn) {
+        // Убираем класс, чтобы сбросить анимацию, если она уже была
+        btn.classList.remove('animate-pop');
+        // Форсируем перерасчет стилей (магия для перезапуска анимации)
+        void btn.offsetWidth; 
+        // Добавляем класс обратно
+        btn.classList.add('animate-pop');
+    }
+});
+
+// Когда анимация заканчивается, убираем класс
+document.addEventListener('animationend', (e) => {
+    if (e.animationName === 'pressPop') {
+        e.target.classList.remove('animate-pop');
+    }
+});
 
 renderHabits();
