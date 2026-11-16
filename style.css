@@ -126,11 +126,16 @@ h1 { font-size: 24px; margin-bottom: 20px; font-weight: 600; color: #e0e0e0; tex
     filter: drop-shadow(0 0 5px rgba(88, 166, 255, 0.8)) !important;
 }
 
-/* --- АНИМАЦИЯ НАЖАТИЯ --- */
+/* --- АНИМАЦИЯ НАЖАТИЯ (ПЛАВНАЯ) --- */
 @keyframes pressPop {
     0% { transform: scale(1); }
-    50% { transform: scale(1.12); } 
+    50% { transform: scale(1.08); } /* Увеличивается чуть меньше, чтобы не было резко */
     100% { transform: scale(1); } 
+}
+//хуй пизда залупа
+.animate-pop {
+    /* Увеличили время до 0.4с и добавили пружинистую кривую */
+    animation: pressPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* Класс, который мы будем добавлять через JS для проигрывания анимации */
