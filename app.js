@@ -189,21 +189,15 @@ function toggleTimer(id) {
 }
 
 // --- МАГИЯ АНИМАЦИИ НАЖАТИЯ ---
-// Слушаем начало нажатия (палец или мышь) на любые кнопки
 document.addEventListener('pointerdown', (e) => {
-    // Ищем ближайшую кнопку, по которой кликнули
     const btn = e.target.closest('.action-btn, .fab, .btn-submit, .close-modal');
-    if (btn) {
-        // Убираем класс, чтобы сбросить анимацию, если она уже была
-        btn.classList.remove('animate-pop');
-        // Форсируем перерасчет стилей (магия для перезапуска анимации)
-        void btn.offsetWidth; 
-        // Добавляем класс обратно
+    // Проверяем, что кнопка есть и анимация на ней СЕЙЧАС НЕ ИГРАЕТ
+    if (btn && !btn.classList.contains('animate-pop')) {
         btn.classList.add('animate-pop');
     }
 });
 
-// Когда анимация заканчивается, убираем класс
+// Когда анимация заканчивается, аккуратно убираем класс
 document.addEventListener('animationend', (e) => {
     if (e.animationName === 'pressPop') {
         e.target.classList.remove('animate-pop');
